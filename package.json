@@ -1,15 +1,15 @@
 {
-  "name": "discord-futur",
+  "name": "chat-app",
   "version": "1.0.0",
+  "description": "Application de chat en temps réel",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-  "bcryptjs": "^2.4.3",
-  "multer": "^1.4.4"
-  "express": "^4.18.2",
-  "socket.io": "^4.7.2"
-}
-
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "multer": "^1.4.4",
+    "socket.io": "^4.7.2"
+  }
 }
