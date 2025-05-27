@@ -1,40 +1,49 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Chat Futur 🔐</title>
-  <style>
-    body { font-family: Arial; margin: 0; }
-    #auth, #login, #chat { display: none; padding: 20px; }
-    #users { float: left; width: 200px; border-right: 1px solid #ccc; height: 100vh; overflow-y: auto; }
-    #messages { margin-left: 200px; padding: 10px; height: 90vh; overflow-y: auto; }
-    #input { position: fixed; bottom: 0; left: 200px; width: calc(100% - 200px); background: #eee; padding: 10px; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chat Discord Futur</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="auth">
-    <h2>Entre la clé secrète</h2>
-    <input id="keyInput" placeholder="Clé..." />
-    <button onclick="checkKey()">Valider</button>
-    <p id="keyError" style="color:red;"></p>
-  </div>
 
-  <div id="login">
-    <h2>Ton pseudo</h2>
-    <input id="pseudoInput" placeholder="Pseudo..." />
-    <button onclick="login()">Connexion</button>
+<div id="auth-container">
+  <h1>Bienvenue sur Chat Futur</h1>
+  <div id="register-box" class="auth-box">
+    <h2>Inscription</h2>
+    <input id="regPseudo" placeholder="Pseudo" />
+    <input id="regPass" type="password" placeholder="Mot de passe" />
+    <button onclick="register()">S'inscrire</button>
+    <p id="regMsg" class="error"></p>
   </div>
+  <div id="login-box" class="auth-box">
+    <h2>Connexion</h2>
+    <input id="loginPseudo" placeholder="Pseudo" />
+    <input id="loginPass" type="password" placeholder="Mot de passe" />
+    <button onclick="login()">Se connecter</button>
+    <p id="loginMsg" class="error"></p>
+  </div>
+</div>
 
-  <div id="chat">
+<div id="chat-container" style="display:none">
+  <div id="sidebar">
+    <h2>Utilisateurs</h2>
     <div id="users"></div>
+  </div>
+  <div id="main-chat">
+    <div id="chat-header">
+      <h3 id="chat-with">Aucun chat sélectionné</h3>
+    </div>
     <div id="messages"></div>
-    <div id="input">
-      <input id="msg" style="width:80%;" placeholder="Écris un message privé..." />
-      <button onclick="send()">Envoyer</button>
+    <div id="input-area">
+      <input id="messageInput" placeholder="Écris un message..." autocomplete="off" />
+      <input type="file" id="imageInput" accept="image/*" />
     </div>
   </div>
+</div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="client.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="client.js"></script>
 </body>
 </html>
