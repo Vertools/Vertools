@@ -1,0 +1,152 @@
+body, html {
+  margin:0; padding:0; height:100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #2c2f33; color: #ddd;
+  display: flex; justify-content: center; align-items: center;
+  height: 100vh;
+}
+
+#auth-container {
+  background: #23272a;
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px;
+  box-shadow: 0 0 15px #000;
+}
+
+.auth-box {
+  margin-bottom: 30px;
+}
+
+.auth-box input {
+  width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;
+  font-size: 1em;
+}
+
+.auth-box button {
+  width: 100%; padding: 10px; background: #7289da; border:none; border-radius: 5px; color: white;
+  font-weight: bold; cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.auth-box button:hover {
+  background: #5b6eae;
+}
+
+.error {
+  color: #f04747;
+  height: 1.5em;
+}
+
+#chat-container {
+  display: flex;
+  height: 90vh;
+  width: 90vw;
+  max-width: 1200px;
+  background: #36393f;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px #000;
+}
+
+#sidebar {
+  width: 250px;
+  background: #2f3136;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#sidebar h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #b9bbbe;
+}
+
+#users button {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  text-align: left;
+  color: #ddd;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1em;
+  transition: background 0.2s ease;
+}
+
+#users button:hover, #users button.active {
+  background: #7289da;
+  color: white;
+}
+
+#main-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-header {
+  background: #202225;
+  padding: 15px;
+  font-weight: bold;
+  color: white;
+  font-size: 1.2em;
+  border-bottom: 1px solid #23272a;
+}
+
+#messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background: #36393f;
+}
+
+.message {
+  margin-bottom: 10px;
+  max-width: 60%;
+  word-wrap: break-word;
+}
+
+.message.from-me {
+  background: #7289da;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 15px 15px 0 15px;
+  margin-left: auto;
+}
+
+.message.from-other {
+  background: #40444b;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 15px 15px 15px 0;
+  margin-right: auto;
+}
+
+.message img {
+  max-width: 200px;
+  border-radius: 10px;
+}
+
+#input-area {
+  display: flex;
+  padding: 10px;
+  background: #40444b;
+  align-items: center;
+}
+
+#messageInput {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  font-size: 1em;
+  outline: none;
+}
+
+#imageInput {
+  margin-left: 10px;
+  cursor: pointer;
+}
