@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat entre potes</title>
+  <style>
+    body { font-family: Arial; margin: 0; padding: 0; }
+    #login { display: flex; flex-direction: column; align-items: center; margin-top: 100px; }
+    #chat { display: none; }
+    #users { float: left; width: 200px; border-right: 1px solid #ccc; height: 100vh; overflow-y: auto; padding: 10px; }
+    #messages { margin-left: 200px; padding: 10px; height: 90vh; overflow-y: auto; }
+    #input { margin-left: 200px; position: fixed; bottom: 0; width: calc(100% - 200px); padding: 10px; background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <div id="login">
+    <h2>Entre ton pseudo</h2>
+    <input type="text" id="pseudo" placeholder="Ton pseudo">
+    <button onclick="login()">Se connecter</button>
+  </div>
+
+  <div id="chat">
+    <div id="users"></div>
+    <div id="messages"></div>
+    <div id="input">
+      <input id="msg" placeholder="Écris un message..." style="width:80%;">
+      <button onclick="send()">Envoyer</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let pseudo = "";
+
+    function login() {
+      pseudo = document.getElementById("pseudo").value;
+      if (pseudo) {
+        socket.emit("login", pseudo);
+        document.getElementById("login").style.display = "none";
+        document.getElementById("chat").style.display = "block";
+      }
+    }
+
+    function send() {
+      const msg = document.getElementById("msg").value;
+      if (msg) {
+        socket.emit("message", msg);
+        document.getElementById("msg").value = "";
+      }
+    }
+
+    socket.on("message", data => {
+      const messages = document.getElementById("messages");
+      messages.innerHTML += `<p><strong>${data.pseudo}:</strong> ${data.message}</p>`;
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    socket.on("users", users => {
+      const usersDiv = document.getElementById("users");
+      usersDiv.innerHTML = "<h3>Connectés</h3>" + users.map(u => `<p>${u}</p>`).join("");
+    });
+  </script>
+</body>
+</html>
