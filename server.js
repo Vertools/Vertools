@@ -2,7 +2,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const fs = require("fs");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs"); // Utilise bcryptjs pour compatibilité Render
 const multer = require("multer");
 const path = require("path");
 
@@ -14,7 +14,7 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 📁 Multer pour upload images
+// 📁 Multer pour upload d'images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads"),
   filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
@@ -23,33 +23,38 @@ const upload = multer({ storage });
 
 if (!fs.existsSync("uploads")) fs.mkdirSync("uploads");
 
-// 📁 USERS : users.json
+// 📁 users.json
 const USERS_FILE = "users.json";
 if (!fs.existsSync(USERS_FILE)) fs.writeFileSync(USERS_FILE, "[]");
 
-// ✅ REGISTER
+// 🔐 Inscription
 app.post("/register", (req, res) => {
   const { username, password } = req.body;
   const users = JSON.parse(fs.readFileSync(USERS_FILE, "utf8"));
 
-  if (users.find(u => u.username === username)) {
-    return res.status(400).json({ error: "Username already exists" });
+  // log pour debug
+  console.log("📂 Utilisateurs actuels :", users.map(u => u.username));
+
+  const usernameLower = username.toLowerCase();
+  if (users.find(u => u.username.toLowerCase() === usernameLower)) {
+    return res.status(400).json({ error: "Ce pseudo est déjà pris." });
   }
 
   const hashed = bcrypt.hashSync(password, 10);
   users.push({ username, password: hashed });
   fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+
   res.json({ success: true });
 });
 
-// ✅ LOGIN
+// 🔐 Connexion
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
   const users = JSON.parse(fs.readFileSync(USERS_FILE, "utf8"));
-  const user = users.find(u => u.username === username);
+  const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
 
   if (!user || !bcrypt.compareSync(password, user.password)) {
-    return res.status(401).json({ error: "Invalid credentials" });
+    return res.status(401).json({ error: "Identifiants invalides." });
   }
 
   res.json({ success: true });
@@ -57,13 +62,13 @@ app.post("/login", (req, res) => {
 
 // 📤 Upload d'image
 app.post("/upload", upload.single("image"), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  if (!req.file) return res.status(400).json({ error: "Aucun fichier envoyé." });
   res.json({ url: `/uploads/${req.file.filename}` });
 });
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// 💬 WebSocket messages
+// 💬 WebSocket temps réel
 const onlineUsers = new Map(); // username -> socket.id
 
 io.on("connection", socket => {
@@ -94,4 +99,4 @@ io.on("connection", socket => {
   });
 });
 
-server.listen(3000, () => console.log("✅ Serveur sur http://localhost:3000"));
+server.listen(3000, () => console.log("✅ Serveur en ligne : http://localhost:3000"));
